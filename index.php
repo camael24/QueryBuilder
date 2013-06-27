@@ -6,6 +6,7 @@
     require "Query/Builder/Select.php";
     require "Query/Builder/Update.php";
     require "Query/Builder/Delete.php";
+    require "Query/Builder/Insert.php";
 
 //    $fluent = new \Hoathis\Query\Builder\Select();
 //    $fluent
@@ -44,12 +45,14 @@
 //        ->limit(5 , 8)
 //    ;
 
-    $fluent = new \Hoathis\Query\Builder\Delete();
-    $fluent->expression('t1,t2')->from(array('t1' , 't2' , 't3'))->where(function ($query){
-       $query->where('t1.id=t2.id')
-           ->where('t2.id=t3.id');
-    });
+//    $fluent = new \Hoathis\Query\Builder\Delete();
+//    $fluent->expression('t1,t2')->from(array('t1' , 't2' , 't3'))->where(function ($query){
+//       $query->where('t1.id=t2.id')
+//           ->where('t2.id=t3.id');
+//    });
 
+    $fluent = new \Hoathis\Query\Builder\Insert();
+    $fluent->into('foo');
 
     $sql = $fluent->sql();
     var_dump($fluent->getWhereValue());
