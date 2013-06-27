@@ -21,17 +21,18 @@
             $query
                 ->where('bar = 3')
                 ->or
-                ->where('bar = 4')
+                    ->where('bar = 4')
                 ->and
-                ->where(function ($query) {
-                    $query
-                        ->where('fooo = 5');
-                })
-                ->where(function ($query) {
-                    $query
-                        ->where('fooo = 6')
-                        ->where('fooo = 7')
-                        ->or->where('fooo = 8');
+                    ->where(function ($query) {
+                        $query
+                            ->where('fooo = 5');
+                    })
+                    ->where(function ($query) {
+                        $query
+                            ->where('fooo = 6')
+                            ->where('fooo = 7')
+                            ->or
+                                ->where('fooo = 8');
                 });
 
         });

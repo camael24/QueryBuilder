@@ -16,18 +16,14 @@
                     $clause($where, $value);
                     $valueClosure   = $where->getWhereValue();
                     $where          = $where->getWhereClause();
-                    $this->_value   = array_merge($this->_value, $valueClosure);
+                    $this->_value[] = $valueClosure
                     $this->_where[] = array('parenthesis' => $where, 'modifier' => $this->_where_modifier);
 
 
                 } else {
 
                     if ($value !== null)
-                        if (!is_array($value))
-                            $this->_value[] = $value;
-                        else
-                            foreach ($value as $v)
-                                $this->_value[] = $v;
+                        $this->_value[] = $value;
 
                     $this->_where[] = array(
                         'modifier' => $this->_where_modifier,
