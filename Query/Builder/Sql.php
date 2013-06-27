@@ -9,6 +9,7 @@
             protected $_limit = array();
             protected $_scope = array();
             protected $_union = null;
+            protected $_isMultiTable = false;
 
             public function from($table, $as = null)
             {
@@ -22,6 +23,9 @@
 
                 if (!in_array($table, $this->_from))
                     $this->_from[] = $table;
+
+                if(count($this->_from) > 1)
+                    $this->_isMultiTable = true;
 
                 return $this;
             }
@@ -115,11 +119,14 @@
                 return 'FROM ' . implode(',', $this->_from);
             }
 
-            protected function _union()
+            protected function _union($start = false)
             {
                 if ($this->_union !== null) {
-                    $previous = '(' . $this->_union->sql() . ')';
-                    return $previous . ' UNION ';
+                    if ($start === false)
+                        return '(' . $this->_union->sql() . ') UNION (';
+                    else
+                        return ')';
+
                 }
             }
 
@@ -129,7 +136,7 @@
                 $structure = $this->_subWhere($where);
 
 
-                return $structure;
+                return 'WHERE ' .    $structure;
 
             }
 

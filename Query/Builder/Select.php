@@ -1,13 +1,12 @@
 <?php
     namespace Hoathis\Query\Builder {
-        class Select extends Sql
+        class Select extends Sql implements Iface
         {
             protected $_manipulate = 'SELECT';
             protected $_manipulateModifier = array();
             protected $_selectExpressions = array();
             protected $_into = null;
 //            private $_having = array();
-
             protected $_lock = null;
             protected $_by_type = null;
 
@@ -63,7 +62,8 @@
                     $this->_groupby(),
                     $this->_orderby(),
                     $this->_limit(),
-                    $this->_lock()
+                    $this->_lock(),
+                    $this->_union(true)
                 );
 
                 return trim(implode(' ', $sql));
