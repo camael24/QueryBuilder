@@ -115,25 +115,6 @@
                 return 'FROM ' . implode(',', $this->_from);
             }
 
-            protected function _where()
-            {
-                if (empty($this->_where))
-                    return;
-
-                $string = array('WHERE');
-
-                foreach ($this->_where as $where) {
-                    if (array_key_exists('parenthesis', $where))
-                        $string [] = $this->_renderWhere($where['parenthesis'], true);
-                    else
-                        $string [] = $this->_renderWhere(array($where));
-
-                }
-
-                return implode(' ', $string);
-
-            }
-
             protected function _union()
             {
                 if ($this->_union !== null) {
@@ -142,26 +123,54 @@
                 }
             }
 
-            private function _renderWhere($whereClause, $parenthesis = false)
+            protected function _where()
             {
-                $string = array();
-                if ($parenthesis === true)
-                    $string[] = '(';
+                $where     = $this->_where;
+                $structure = $this->_subWhere($where);
 
 
-                foreach ($whereClause as $where) {
-                    if (array_key_exists('parenthesis', $where)) {
-                        $string[] = $this->_renderWhere($where['parenthesis'], true);
+                return $structure;
+
+            }
+
+            protected function _subWhere($where)
+            {
+                $structure = array();
+                foreach ($where as $position => $clause) {
+                    if (array_key_exists('parenthesis', $clause)) {
+                        $modifier = $clause['modifier'];
+                        if ($modifier === null)
+                            $modifier = 'AND';
+                        if ($position === 0)
+                            $modifier = '';
+
+                        $structure[] = $modifier;
+                        if (count($clause['parenthesis']) > 1)
+                            $structure[] = '(';
+                        $structure[] = $this->_subWhere($clause['parenthesis']);
+                        if (count($clause['parenthesis']) > 1)
+                            $structure[] = ')';
                     } else {
-                        $modifier  = $where['modifier'];
-                        $clause    = $where['clause'];
-                        $string [] = (($modifier === null) ? '' : $modifier) . ' ' . $clause;
-                    }
-                }
-                if ($parenthesis === true)
-                    $string[] = ')';
 
-                return implode(' ', $string);
+                        $structure[] = $this->_rendWhere($clause, $position);
+                    }
+
+
+                }
+                return implode(' ', $structure);
+            }
+
+            private function _rendWhere($clause, $position)
+            {
+                $modifier = $clause['modifier'];
+                $clause   = $clause['clause'];
+                if ($modifier === null)
+                    $modifier = 'AND';
+                if ($position === 0)
+                    $modifier = '';
+
+
+                return $modifier . ' ' . $clause;
             }
 
             protected function _groupby()
