@@ -16,7 +16,7 @@
                     $clause($where, $value);
                     $valueClosure   = $where->getWhereValue();
                     $where          = $where->getWhereClause();
-                    $this->_value[] = $valueClosure
+                    $this->_value[] = $valueClosure;
                     $this->_where[] = array('parenthesis' => $where, 'modifier' => $this->_where_modifier);
 
 
