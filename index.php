@@ -7,6 +7,9 @@
     require "Query/Builder/Update.php";
     require "Query/Builder/Delete.php";
     require "Query/Builder/Insert.php";
+    require "Query/Statement.php";
+
+
 
     $select = new \Hoathis\Query\Builder\Select();
     $select
@@ -68,3 +71,16 @@
 
 
     echo 'INSERT : ' . $insert->sql() . "\n";
+
+
+$statement = new \Hoathis\Query\Statement();
+    $statement->select
+        ->from('foo')
+        ->where('bar = ?', array('h', 'e', 'l', 'l', 'o'))
+        ->where('foo = 5', 5);
+
+    $statement->save();
+
+    echo count($statement);
+    foreach($statement as $i => $v)
+        var_dump($i , $v);

@@ -79,6 +79,24 @@ DELETE
 DELETE  t1,t2 WHERE  (  t1.id=t2.id AND t2.id=t3.id )
 
 
+STATEMENT
+============
+This class implements Iterator, Countable, ArrayAccess for access of Query like it :
+
+    $statement = new \Hoathis\Query\Statement();
+    $statement->select
+        ->from('foo')
+        ->where('bar = ?', array('h', 'e', 'l', 'l', 'o'))
+        ->where('foo = 5', 5);
+
+    $statement->save();
+
+    echo count($statement);
+    foreach($statement as $i => $v)
+        var_dump($i , $v);
+
+    echo $statement[0];
+
 ABOUT
 ============
 I am base my code on http://dev.mysql.com/doc/refman/5.0/fr/data-manipulation.html reference
