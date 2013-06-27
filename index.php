@@ -5,6 +5,7 @@
     require "Query/Builder/Sql.php";
     require "Query/Builder/Select.php";
     require "Query/Builder/Update.php";
+    require "Query/Builder/Delete.php";
 
 //    $fluent = new \Hoathis\Query\Builder\Select();
 //    $fluent
@@ -28,20 +29,23 @@
 //
 //        });
 
-    $fluent = new \Hoathis\Query\Builder\Update();
-    $fluent
-        ->table('table')
-        ->table(function (\Hoathis\Query\Builder\Join $join) {
-            $join->join('hello', 'bar');
-        })
-        ->set('table.foo', 'bar')
-        ->set(array(
-            'hola' => 'wazza',
-            'bibu' => 5
-        ))
-        ->where('foo = bar')
-        ->limit(5 , 8)
-    ;
+//    $fluent = new \Hoathis\Query\Builder\Update();
+//    $fluent
+//        ->table('table')
+//        ->table(function (\Hoathis\Query\Builder\Join $join) {
+//            $join->join('hello', 'bar');
+//        })
+//        ->set('table.foo', 'bar')
+//        ->set(array(
+//            'hola' => 'wazza',
+//            'bibu' => 5
+//        ))
+//        ->where('foo = bar')
+//        ->limit(5 , 8)
+//    ;
+
+    $fluent = new \Hoathis\Query\Builder\Delete();
+    $fluent->from('somelog')->where('user = "jicole"')->orderby('timestamp')->limit(1);
 
 
     $sql = $fluent->sql();
