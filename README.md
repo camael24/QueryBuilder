@@ -17,8 +17,9 @@ INSERT
         ->on('DUPLICATE KEY UPDATE foo=bar');
 
     $sql = $fluent->sql();
-    
-    
+
+INSERT  INTO foo (foo , a) VALUES (bar , b)
+
 SELECT
 ------------
     $fluent = new \Hoathis\Query\Builder\Select();
@@ -43,7 +44,10 @@ SELECT
 
         });
         $sql = $fluent->sql();
-        
+
+SELECT : SELECT  *  FROM foo WHERE   scope = ? AND (  bar = 3 OR bar = 4 AND  fooo = 5 )
+
+
 UPDATE
 ------------
 
@@ -59,9 +63,11 @@ UPDATE
             'bibu' => 5
         ))
         ->where('foo = bar')
-        ->limit(5 , 8);
+        ->limit(5 , 8); // The limit will be ignored in presence of join ;)
       $sql = $fluent->sql();
-      
+
+UPDATE : UPDATE  table,hello INNER JOIN bar SET table.foo=bar , hola=wazza , bibu=5 WHERE  foo = bar
+
 DELETE
 ------------
     $fluent = new \Hoathis\Query\Builder\Delete();
@@ -70,7 +76,11 @@ DELETE
            ->where('t2.id=t3.id');
     });
     
-    
+DELETE  t1,t2 WHERE  (  t1.id=t2.id AND t2.id=t3.id )
+
+
+ABOUT
+============
 I am base my code on http://dev.mysql.com/doc/refman/5.0/fr/data-manipulation.html reference
 
 Regards,
