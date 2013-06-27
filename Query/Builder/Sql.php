@@ -11,6 +11,11 @@
 
             public function from($table, $as = null)
             {
+                if ($table instanceof \Closure) {
+                    $join = new Join();
+                    $table($join);
+                    $table = $join;
+                }
                 if ($as !== null)
                     $table .= ' AS ' . $as;
 
@@ -19,6 +24,7 @@
 
                 return $this;
             }
+
 
             public function by($columns)
             {
@@ -95,6 +101,10 @@
             {
                 if (empty($this->_from))
                     throw new \Exception('Error from value are empty');
+
+                foreach ($this->_from as $i => $d)
+                    if ($d instanceof Join)
+                        $this->_from[$i] = $d->sql();
 
                 return 'FROM ' . implode(',', $this->_from);
             }
