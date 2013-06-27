@@ -45,7 +45,10 @@
 //    ;
 
     $fluent = new \Hoathis\Query\Builder\Delete();
-    $fluent->from('somelog')->where('user = "jicole"')->orderby('timestamp')->limit(1);
+    $fluent->expression('t1,t2')->from(array('t1' , 't2' , 't3'))->where(function ($query){
+       $query->where('t1.id=t2.id')
+           ->where('t2.id=t3.id');
+    });
 
 
     $sql = $fluent->sql();

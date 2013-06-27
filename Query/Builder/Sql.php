@@ -10,6 +10,19 @@
             protected $_scope = array();
             protected $_union = null;
             protected $_isMultiTable = false;
+            protected $_selectExpressions = array();
+
+            public function expression($cols, $as = null)
+            {
+                $string = $cols;
+                if ($as !== null)
+                    $string .= ' AS ' . $as;
+
+                if (!in_array($string, $this->_selectExpressions))
+                    $this->_selectExpressions[] = $string;
+
+                return $this;
+            }
 
             public function from($table, $as = null)
             {
@@ -24,7 +37,7 @@
                 if (!in_array($table, $this->_from))
                     $this->_from[] = $table;
 
-                if(count($this->_from) > 1)
+                if (count($this->_from) > 1)
                     $this->_isMultiTable = true;
 
                 return $this;
@@ -136,7 +149,7 @@
                 $structure = $this->_subWhere($where);
 
 
-                return 'WHERE ' .    $structure;
+                return 'WHERE ' . $structure;
 
             }
 
@@ -216,6 +229,15 @@
                 return $this;
             }
 
+            protected function _select()
+            {
+                $return = null;
+                if (!empty($this->_selectExpressions)) {
+                    $return = implode(',', $this->_selectExpressions);
+                }
+                return (($return === null) ? '*' : $return);
+
+            }
 
         }
     }

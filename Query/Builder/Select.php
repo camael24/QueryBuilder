@@ -4,7 +4,7 @@
         {
             protected $_manipulate = 'SELECT';
             protected $_manipulateModifier = array();
-            protected $_selectExpressions = array();
+
             protected $_into = null;
 //            private $_having = array();
             protected $_lock = null;
@@ -18,17 +18,7 @@
                 return $this;
             }
 
-            public function expression($cols, $as = null)
-            {
-                $string = $cols;
-                if ($as !== null)
-                    $string .= ' AS ' . $as;
 
-                if (!in_array($string, $this->_selectExpressions))
-                    $this->_selectExpressions[] = $string;
-
-                return $this;
-            }
 
             public function into($table, $isFile = false, $option = array())
             {
@@ -76,15 +66,7 @@
 
             }
 
-            protected function _select()
-            {
-                $return = null;
-                if (!empty($this->_selectExpressions)) {
-                    $return = implode(',', $this->_selectExpressions);
-                }
-                return (($return === null) ? '*' : $return);
 
-            }
 
             protected function _into()
             {
