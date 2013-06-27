@@ -9,6 +9,7 @@
 //            private $_having = array();
             protected $_lock = null;
             protected $_by_type = null;
+            protected $_on = null;
 
             public function modifiers($type)
             {
@@ -17,7 +18,6 @@
 
                 return $this;
             }
-
 
 
             public function into($table, $isFile = false, $option = array())
@@ -35,6 +35,14 @@
             public function lock($type)
             {
                 $this->_lock = $type;
+
+                return $this;
+            }
+
+            public function on($query)
+            {
+                if (!in_array($query, $this->_on))
+                    $this->_on[] = $query;
 
                 return $this;
             }
@@ -65,7 +73,6 @@
                     return implode(',', $this->_manipulateModifier);
 
             }
-
 
 
             protected function _into()
