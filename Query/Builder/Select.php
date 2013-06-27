@@ -53,6 +53,7 @@
             public function sql()
             {
                 $sql = array(
+                    $this->_union(),
                     $this->_manipulate,
                     $this->_manipulateOptions(),
                     $this->_select(),

@@ -8,6 +8,7 @@
             protected $_from = array();
             protected $_limit = array();
             protected $_scope = array();
+            protected $_union = null;
 
             public function from($table, $as = null)
             {
@@ -97,6 +98,11 @@
                 return $this;
             }
 
+            public function union(Sql $sql)
+            {
+                $this->_union = $sql;
+            }
+
             protected function _from()
             {
                 if (empty($this->_from))
@@ -128,10 +134,16 @@
 
             }
 
+            protected function _union()
+            {
+                if ($this->_union !== null) {
+                    $previous = '(' . $this->_union->sql() . ')';
+                    return $previous . ' UNION ';
+                }
+            }
+
             private function _renderWhere($whereClause, $parenthesis = false)
             {
-
-
                 $string = array();
                 if ($parenthesis === true)
                     $string[] = '(';
