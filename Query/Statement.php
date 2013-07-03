@@ -210,7 +210,7 @@
              */
             public function offsetSet($offset, $value)
             {
-                return; // TODO Read only !
+                return;
             }
 
             /**
@@ -227,7 +227,7 @@
              */
             public function offsetUnset($offset)
             {
-                return; // TODO Read only !
+                return;
             }
         }
     }

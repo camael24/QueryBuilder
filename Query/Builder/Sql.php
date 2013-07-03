@@ -14,12 +14,20 @@
 
             public function expression($cols, $as = null)
             {
-                $string = $cols;
-                if ($as !== null)
-                    $string .= ' AS ' . $as;
+                $all = array();
+                if (is_string($cols)) {
+                    $string = $cols;
+                    if ($as !== null)
+                        $string .= ' AS ' . $as;
 
-                if (!in_array($string, $this->_selectExpressions))
-                    $this->_selectExpressions[] = $string;
+                    $all = array($string);
+                } else if (is_array($cols))
+                    $all = $cols;
+
+
+                foreach ($all as $string)
+                    if (!in_array($string, $this->_selectExpressions))
+                        $this->_selectExpressions[] = $string;
 
                 return $this;
             }
@@ -139,7 +147,6 @@
                         return '(' . $this->_union->sql() . ') UNION (';
                     else
                         return ')';
-
                 }
             }
 
@@ -148,9 +155,7 @@
                 $where     = $this->_where;
                 $structure = $this->_subWhere($where);
 
-
                 return 'WHERE ' . $structure;
-
             }
 
             protected function _subWhere($where)

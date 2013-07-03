@@ -9,11 +9,11 @@
 
             public function where($clause, $value = null)
             {
+
                 if ($clause instanceof \Closure) {
 
-
                     $where = new WhereClause();
-                    $clause($where, $value);
+                    $clause($where);
                     $valueClosure   = $where->getWhereValue();
                     $where          = $where->getWhereClause();
                     $this->_value[] = $valueClosure;
@@ -22,8 +22,15 @@
 
                 } else {
 
-                    if ($value !== null)
-                        $this->_value[] = $value;
+                    if ($value !== null) {
+                        if ($value instanceof \Closure) {
+                            $select = new Select();
+                            $value($select);
+                            $clause .= ' ( ' . $select->sql() . ' )';
+                        } else {
+                            $this->_value[] = $value;
+                        }
+                    }
 
                     $this->_where[] = array(
                         'modifier' => $this->_where_modifier,
